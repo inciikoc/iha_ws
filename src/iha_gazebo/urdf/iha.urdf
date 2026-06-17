@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<robot name="iha">
+
+  <!-- Gövde -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.5 0.5 0.1"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.5 0.5 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.5"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.02" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- Kamera link -->
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.25 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- IMU link -->
+  <link name="imu_link">
+    <visual>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- GPS link -->
+  <link name="gps_link">
+    <visual>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="gps_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="gps_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <!-- LiDAR link -->
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.05"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Yerçekimini kapat -->
+  <gazebo reference="base_link">
+    <gravity>false</gravity>
+  </gazebo>
+
+  <!-- Hareket kontrolü -->
+  <gazebo>
+    <plugin filename="gz-sim-velocity-control-system"
+            name="gz::sim::systems::VelocityControl">
+      <initial_linear>0 0 0</initial_linear>
+      <initial_angular>0 0 0</initial_angular>
+      <topic>/cmd_vel</topic>
+    </plugin>
+  </gazebo>
+
+  <!-- Kamera sensörü -->
+  <gazebo reference="camera_link">
+    <sensor name="iha_camera" type="camera">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <topic>/iha_camera/image_raw</topic>
+      <camera>
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <!-- IMU sensörü -->
+  <gazebo reference="imu_link">
+    <sensor name="iha_imu" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <topic>/iha/imu</topic>
+      <imu>
+        <angular_velocity>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>0.0</stddev></noise></z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+
+  <!-- GPS sensörü -->
+  <gazebo reference="gps_link">
+    <sensor name="iha_gps" type="navsat">
+      <always_on>true</always_on>
+      <update_rate>10</update_rate>
+      <topic>/iha/gps</topic>
+      <gz_frame_id>gps_link</gz_frame_id>
+    </sensor>
+  </gazebo>
+
+  <!-- LiDAR sensörü -->
+  <gazebo reference="lidar_link">
+    <sensor name="iha_lidar" type="gpu_lidar">
+      <always_on>true</always_on>
+      <update_rate>10</update_rate>
+      <topic>/iha/lidar</topic>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>30.0</max>
+        </range>
+      </lidar>
+    </sensor>
+  </gazebo>
+
+</robot>

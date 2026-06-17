@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/inci/ros2_ws/install/simple_interfaces_pkg/include/**",
+        "/home/inci/turtlesim_ws/install/turtlesim_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/inci/iha_ws/iha_interfaces/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ros2",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

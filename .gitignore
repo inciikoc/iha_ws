@@ -1,0 +1,9 @@
+build/
+install/
+log/
+.vscode/browse.vc.db
+*.db
+*.zip
+*.pt
+__pycache__/
+*.pyc

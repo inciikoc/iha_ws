@@ -1,0 +1,20 @@
+{
+    "ROS2.distro": "humble",
+    "python.analysis.extraPaths": [
+        "/home/inci/iha_ws/install/iha_telemetry/lib/python3.10/site-packages",
+        "/home/inci/iha_ws/install/iha_sensors/lib/python3.10/site-packages",
+        "/home/inci/iha_ws/install/iha_flight_control/lib/python3.10/site-packages",
+        "/home/inci/uav_sim_ws/build/uav_components",
+        "/home/inci/uav_sim_ws/install/uav_components/lib/python3.10/site-packages",
+        "/home/inci/uav_sim_ws/build/uav_bringup",
+        "/home/inci/uav_sim_ws/install/uav_bringup/lib/python3.10/site-packages",
+        "/home/inci/ros2_ws/build/simple_py_pkg",
+        "/home/inci/ros2_ws/install/simple_py_pkg/lib/python3.10/site-packages",
+        "/home/inci/ros2_ws/install/simple_interfaces_pkg/local/lib/python3.10/dist-packages",
+        "/home/inci/turtlesim_ws/install/turtlesim_py_pkg/lib/python3.10/site-packages",
+        "/home/inci/turtlesim_ws/install/turtlesim_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "ros.distro": "humble"
+}
