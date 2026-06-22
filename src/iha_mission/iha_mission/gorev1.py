@@ -9,30 +9,25 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 from tf2_msgs.msg import TFMessage
 
-# =========================================================
-# KULLANICI AYARLARI
-# =========================================================
-
+# === KULLANICI AYARLARI ===
 POLE1_X = -150.0
 POLE1_Y = 100.0
 POLE2_X = 0.0
 POLE2_Y = 100.0
 
-LOBE_RADIUS_M = 40.0
+LOBE_RADIUS_M = 110.0
 ARC_SEGMENTS = 8
-WP_ACCEPT_RADIUS_M = 15.0
+WP_ACCEPT_RADIUS_M = 45.0
 NUM_LAPS = 2
 BASE_CRUISE_SPEED = 6.0
 
 # İrtifa kontrolü
-TARGET_ALTITUDE_M = 25.0   # hedef irtifa (m)
-ALT_KP = 0.5               # irtifa kontrol kazancı
-MAX_CLIMB_SPEED = 3.0      # max tırmanış/iniş hızı (m/s)
+TARGET_ALTITUDE_M = 22.0
+ALT_KP = 0.5
+MAX_CLIMB_SPEED = 3.0
 
-# =========================================================
-# GEOMETRİ YARDIMCILARI
-# =========================================================
 
+# === GEOMETRİ YARDIMCILARI ===
 def arc_waypoints(cx, cy, radius, start_angle, sweep, segments):
     pts = []
     for i in range(1, segments + 1):
@@ -51,27 +46,23 @@ def build_figure8_waypoints():
     axis_angle = math.atan2(dy, dx)
 
     waypoints = []
-
     for lap in range(NUM_LAPS):
         start1 = axis_angle + math.pi
         sweep1 = -2 * math.pi
         pts1 = arc_waypoints(p2x, p2y, LOBE_RADIUS_M,
-                              start1, sweep1, ARC_SEGMENTS)
+                             start1, sweep1, ARC_SEGMENTS)
         waypoints.extend(pts1)
 
         start2 = axis_angle
         sweep2 = 2 * math.pi
         pts2 = arc_waypoints(p1x, p1y, LOBE_RADIUS_M,
-                              start2, sweep2, ARC_SEGMENTS)
+                             start2, sweep2, ARC_SEGMENTS)
         waypoints.extend(pts2)
 
     return waypoints
 
 
-# =========================================================
-# ROS2 NODE
-# =========================================================
-
+# === ROS2 NODE ===
 class GorevNode(Node):
     def __init__(self):
         super().__init__('gorev1_node')
@@ -140,14 +131,11 @@ class GorevNode(Node):
                 math.sin(target_angle - self.current_angle),
                 math.cos(target_angle - self.current_angle))
 
-            # Uçak hep kendi burnuyla ileri gitsin
             cmd.linear.x = BASE_CRUISE_SPEED
             cmd.linear.y = 0.0
-            # İrtifa kontrolü: 25 m'ye tırmanıp orada tutun
             alt_error = TARGET_ALTITUDE_M - self.z
             cmd.linear.z = max(-MAX_CLIMB_SPEED,
-                               min(MAX_CLIMB_SPEED, alt_error * ALT_KP))
-            # Yavaş yavaş dön
+                              min(MAX_CLIMB_SPEED, alt_error * ALT_KP))
             cmd.angular.z = max(-0.5, min(0.5, angle_diff * 1.0))
 
         lap = self.current_wp // (ARC_SEGMENTS * 2) + 1
@@ -164,7 +152,8 @@ def main(args=None):
     node = GorevNode()
     rclpy.spin(node)
     node.destroy_node()
-
-
     rclpy.shutdown()
 
+
+if __name__ == '__main__':
+    main()

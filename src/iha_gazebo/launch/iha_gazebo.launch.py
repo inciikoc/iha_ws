@@ -26,7 +26,7 @@ def generate_launch_description():
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
-                '/iha/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
+                '/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
                 '/iha/gps@sensor_msgs/msg/NavSatFix@gz.msgs.NavSat',
                 '/iha_camera/image_raw@sensor_msgs/msg/Image@gz.msgs.Image',
                 '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',

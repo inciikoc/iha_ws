@@ -17,7 +17,7 @@
           <izz>0.3297</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <collision name='fuselodge_collision'>
         <pose>-.14 0 0 0 0 0</pose>
         <geometry>
@@ -79,7 +79,7 @@
           <diffuse>.175 .175 .175 1.0</diffuse>
         </material>
       </visual>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <velocity_decay />
       <self_collide>0</self_collide>
       <sensor name="imu_sensor" type="imu">
@@ -246,7 +246,7 @@
           <izz>1e-05</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name="airspeed_visual">
         <geometry>
           <cylinder>
@@ -278,7 +278,7 @@
           <izz>0.000167604</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <collision name='rotor_puller_collision'>
         <pose>0 0 0 0 -1.57079632679 0</pose>
         <geometry>
@@ -316,7 +316,7 @@
           <diffuse>0 0 1 1.0</diffuse>
         </material>
       </visual>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <velocity_decay />
       <self_collide>0</self_collide>
     </link>
@@ -351,7 +351,7 @@
         </inertia>
         <pose>0 0.3 0 0.00 0 0.0</pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='left_elevon_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -379,8 +379,8 @@
           <izz>0.0000204</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
+      <gravity>true</gravity>
       <velocity_decay />
       <visual name="LeftWheelVisual">
         <pose>0 0 0 -1.57079632679 0 0</pose>
@@ -423,8 +423,8 @@
           <izz>0.0000204</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
+      <gravity>true</gravity>
       <velocity_decay />
       <visual name="RightWheelVisual">
         <pose>0 0 0 -1.57079632679 0 0</pose>
@@ -467,8 +467,8 @@
           <izz>0.0000204</izz>
         </inertia>
       </inertial>
-      <gravity>false</gravity>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
+      <gravity>true</gravity>
       <velocity_decay />
       <visual name="CenterWheelVisual">
         <pose>0 0 0 -1.57079632679 0 0</pose>
@@ -511,7 +511,7 @@
         </inertia>
         <pose>0 -0.3 0 0.00 0 0.0</pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='right_elevon_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -539,7 +539,7 @@
         </inertia>
         <pose>0 0.15 0 0.00 0 0.0</pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='left_flap_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -567,7 +567,7 @@
         </inertia>
         <pose>0 -0.15 0 0.00 0 0.0</pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='right_flap_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -595,7 +595,7 @@
         </inertia>
         <pose> -0.5 0 0 0.00 0 0.0</pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='elevator_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -623,7 +623,7 @@
         </inertia>
         <pose>-0.5 0 0.05 0 0 0 </pose>
       </inertial>
-      <gravity>false</gravity>
+      <gravity>true</gravity>
       <visual name='rudder_visual'>
         <pose>0.07 0.0 -0.08 0.00 0 0.0</pose>
         <geometry>
@@ -945,8 +945,9 @@
       <sub_topic>servo_3</sub_topic>
       <p_gain>18.0</p_gain>
     </plugin>
-    <plugin filename="ignition-gazebo-multicopter-motor-model-system"
-      name="ignition::gazebo::systems::MulticopterMotorModel">
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+      name="gz::sim::systems::MulticopterMotorModel">
+      <robotNamespace>model/iha</robotNamespace>   <!-- EKLENEN SATIR -->
       <jointName>rotor_puller_joint</jointName>
       <linkName>rotor_puller</linkName>
       <turningDirection>cw</turningDirection>
@@ -962,20 +963,14 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
-    <plugin
-      filename="ignition-gazebo-joint-controller-system"
-      name="ignition::gazebo::systems::JointController">
+    <!--<plugin
+      filename="gz-sim-joint-controller-system"
+      name="gz::sim::systems::JointController">
       <joint_name>rotor_puller_joint</joint_name>
       <topic>/model/iha/rotor_velocity</topic>
       <p_gain>0.1</p_gain>
     </plugin>
     <static>0</static>
-  <!--  
-  <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
-    <initial_linear>0 0 0</initial_linear>
-    <initial_angular>0 0 0</initial_angular>
-    <topic>/cmd_vel</topic>
-  </plugin>
   -->
   </model>
 </sdf>
